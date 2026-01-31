@@ -2,5 +2,5 @@
 
 void main()
 {
-	std::cout << "Vse po novoy" << std::endl;
+	std::cout << "s.Novinki" << std::endl;
 }
