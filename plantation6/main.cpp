@@ -2,5 +2,5 @@
 
 void main()
 {
-	std::cout << "LeSHA PRIVET" << std::endl;
+	std::cout << "LeSHA poka" << std::endl;
 }
