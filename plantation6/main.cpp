@@ -2,5 +2,5 @@
 
 void main()
 {
-	std::cout << "LeSHA PRIVET" << std::endl;
+	std::cout << "125412541345134531534164136123424323424324242423432322343243212312" << std::endl;
 }
