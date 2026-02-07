@@ -5,8 +5,8 @@
 
 void main()
 {
-	sf::Window main_window(sf::VideoMode(500, 500), "window");
-	
+	sf::RenderWindow main_window(sf::VideoMode(500, 500), "window");
+	sf::Event::EventType;
 	while (main_window.isOpen()) // цикл отрисовки кадра
 	{
 		sf::Event main_window_event;
