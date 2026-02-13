@@ -67,5 +67,5 @@ public:
         return is_visible;
     }
 private:
-    bool is_visible = false;
+    bool is_visible = true;
 };
