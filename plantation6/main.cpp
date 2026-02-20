@@ -7,9 +7,12 @@
 
 void main()
 {
+	sf::RenderWindow main_window(sf::VideoMode::getDesktopMode(), "", sf::Style::Fullscreen);
+	sf::Vector2u resolution = main_window.getSize();
+
 	// Здесь создаете объект вашего класса, например:
 	// Button start_game;
-	
+
 
 	AbstractGraphics* draw_objects[] = {
 		// Здесь добавляете в массив ссылку на ваш объект, например:
@@ -17,19 +20,20 @@ void main()
 		nullptr
 	};
 	constexpr int n_draw_objects = sizeof(draw_objects) / sizeof(AbstractGraphics*);
-
-	sf::RenderWindow main_window(sf::VideoMode(500, 500), "window");
-	sf::Event::EventType;
+	
 	while (main_window.isOpen()) // цикл отрисовки кадра
 	{
-		main_window.clear();
+		main_window.clear(sf::Color(255, 255, 255));
 
 		sf::Event main_window_event;
 		while (main_window.pollEvent(main_window_event)) // цикл обработки событий
 		{
-			if (main_window_event.type == sf::Event::Closed)
+			if (main_window_event.type == sf::Event::Closed
+			 || main_window_event.type == sf::Event::EventType::KeyPressed
+			 && main_window_event.key.code == sf::Keyboard::Escape)
 			{
 				main_window.close();
+				break;
 			}
 
 			for (int i = 0; i < n_draw_objects; ++i)
@@ -46,7 +50,7 @@ void main()
 							pos = { (unsigned)main_window_event.mouseMove.x, (unsigned)main_window_event.mouseMove.y };
 						if (main_window_event.type == sf::Event::EventType::MouseWheelScrolled)
 							pos = { (unsigned)main_window_event.mouseWheel.x, (unsigned)main_window_event.mouseWheel.y };
-						if (draw_objects[i]->area().contains(pos)) draw_objects[i]->event(main_window_event);
+						if (draw_objects[i]->area().contains(pos) || draw_objects[i]->isMouseHover()) draw_objects[i]->event(main_window_event);
 					}
 					else draw_objects[i]->event(main_window_event);
 				}
