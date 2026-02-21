@@ -8,13 +8,17 @@ class CheckBox : public AbstractGraphics
 {
 public:
     // Конструктор
-    CheckBox(unsigned x, unsigned y, unsigned size = 20, const std::u16string& text = u"");
+    CheckBox(sf::Vector2u res, const std::u16string& text = u"");
     ~CheckBox() = default;
 
     // Геттеры и сеттеры
     bool isChecked() const;
     void setChecked(bool checked);
-    void setText(const std::u16string& text);
+
+
+    void setSize(unsigned size);
+    void setPosition(sf::Vector2u pos);
+
 
     // Переопределение виртуальных методов
     void draw(sf::RenderWindow* window) override;
@@ -22,23 +26,23 @@ public:
 
 protected:
     void mousePressedEvent(unsigned x, unsigned y, sf::Mouse::Button button) override;
-    void mouseMoveEvent(unsigned x, unsigned y) override;
-    void resizeEvent(unsigned width, unsigned height) override;
-    void showEvent() override;
-    void hideEvent() override;
+    void mouseHit() override;
+    void mouseMissed() override;
 
 private:
     void setupGraphics();
     void centerText();
     void updateColor();
-    bool isMouseOver(unsigned x, unsigned y) const;
+    void updatePosition();
 
 private:
-    sf::Vector2<unsigned> m_position;
-    unsigned m_size;
+    sf::Vector2u m_position = { 0,0 };
+    unsigned m_size=20;
+    unsigned m_realsize;
+    unsigned m_winHeight;
     std::u16string m_label;
-    bool m_checked;
-    bool m_hovered;
+    bool m_checked = false;
+    bool m_hovered = false;
 
     // Графические элементы
     sf::RectangleShape m_box;
@@ -49,6 +53,6 @@ private:
     sf::Color m_normalColor = sf::Color(255, 255, 255);      // Обычное состояние
     sf::Color m_hoverColor = sf::Color(200, 230, 255);       // При наведении
     sf::Color m_checkedColor = sf::Color(46, 204, 113);       // Цвет галочки
-    sf::Color m_textColor = sf::Color(44, 62, 80);        // Цвет текста
+    sf::Color m_textColor = sf::Color(255, 0, 0);        // Цвет текста
     sf::Color m_outlineColor = sf::Color(44, 62, 80);     // Цвет рамки
 };
