@@ -21,6 +21,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="checkbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="extlibs\bin\x64\sfml-audio-2.dll">
@@ -655,6 +658,9 @@
       <Filter>Libraries</Filter>
     </ClInclude>
     <ClInclude Include="AbstractGraphics.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="checkbox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
