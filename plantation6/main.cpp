@@ -1,4 +1,5 @@
 #include <iostream>
+#include <glad/glad.h>
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
