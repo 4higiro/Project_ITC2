@@ -15,10 +15,8 @@ public:
     bool isChecked() const;
     void setChecked(bool checked);
 
-
     void setSize(unsigned size);
     void setPosition(sf::Vector2u pos);
-
 
     // Переопределение виртуальных методов
     void draw(sf::RenderWindow* window) override;
@@ -32,7 +30,7 @@ protected:
 private:
     void setupGraphics();
     void centerText();
-    void updateColor();
+    void updateTexture();
     void updatePosition();
 
 private:
@@ -49,10 +47,14 @@ private:
     sf::Text m_text;
     sf::Font m_font;
 
-    // Цвета
-    sf::Color m_normalColor = sf::Color(255, 255, 255);      // Обычное состояние
-    sf::Color m_hoverColor = sf::Color(200, 230, 255);       // При наведении
-    sf::Color m_checkedColor = sf::Color(46, 204, 113);       // Цвет галочки
+
+
+
+    sf::Texture m_normalTexture;      // Текстура для обычного состояния
+    sf::Texture m_hoverTexture;       // Текстура при наведении
+    sf::Texture m_checkedTexture;
+
+ 
     sf::Color m_textColor = sf::Color(255, 0, 0);        // Цвет текста
     sf::Color m_outlineColor = sf::Color(44, 62, 80);     // Цвет рамки
 };

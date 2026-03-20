@@ -5,7 +5,12 @@ CheckBox::CheckBox(sf::Vector2u res, const std::u16string& text)
     : m_label(text), m_winHeight(res.y)
 {
     m_realsize = m_size * m_winHeight / 1000.0;
+
+    m_normalTexture.loadFromFile("resources/gg.png");
+    m_hoverTexture.loadFromFile("resources/gg1.png");
+    m_checkedTexture.loadFromFile("resources/gg2.png");
     setupGraphics();
+
 }
 
 bool CheckBox::isChecked() const
@@ -16,7 +21,7 @@ bool CheckBox::isChecked() const
 void CheckBox::setChecked(bool checked)
 {
     m_checked = checked;
-    updateColor();
+    updateTexture();
 }
 
 void CheckBox::setSize(unsigned size)
@@ -64,7 +69,7 @@ void CheckBox::mousePressedEvent(unsigned x, unsigned y, sf::Mouse::Button butto
     if (button == sf::Mouse::Left )
     {
         m_checked = !m_checked;
-        updateColor();
+        updateTexture();
     }
 }
 
@@ -72,12 +77,12 @@ void CheckBox::mousePressedEvent(unsigned x, unsigned y, sf::Mouse::Button butto
 void CheckBox::mouseHit()
 {
     m_hovered = true;
-    updateColor();
+    updateTexture();
 }
 void CheckBox::mouseMissed()
 {
     m_hovered = false;
-    updateColor();
+    updateTexture();
 }
 
 
@@ -88,7 +93,9 @@ void CheckBox::setupGraphics()
     m_box.setPosition(static_cast<float>(m_position.x), static_cast<float>(m_position.y));
     m_box.setOutlineThickness(2);
     m_box.setOutlineColor(m_outlineColor);
-    m_box.setFillColor(m_normalColor);
+
+    m_box.setTexture(&m_normalTexture);
+
 
     // Настройка шрифта
     if (!m_font.loadFromFile("resources/Strogo-Regular.ttf"))
@@ -114,21 +121,22 @@ void CheckBox::centerText()
     );
 }
 
-void CheckBox::updateColor()
+void CheckBox::updateTexture()
 {
-    
-    if (m_hovered)
+    if (m_checked)
     {
-        m_box.setFillColor(m_hoverColor);
+        // Если отмечен и есть текстура для отмеченного состояния
+        m_box.setTexture(&m_checkedTexture);
     }
-    else if (m_checked)
+    else if (m_hovered)
     {
-        // Если отмечен - красный фон
-        m_box.setFillColor(m_checkedColor);
+        // Если наведен курсор и есть текстура для наведения
+        m_box.setTexture(&m_hoverTexture);
     }
-    else
+    else 
     {
-        m_box.setFillColor(m_normalColor);
+        // Обычное состояние
+        m_box.setTexture(&m_normalTexture);
     }
 }
 
