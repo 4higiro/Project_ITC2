@@ -3,6 +3,10 @@
 #include <iostream>
 #include <string>
 
+class Action {
+public:
+    virtual void doAction() = 0;
+};
 
 class Button : public AbstractGraphics 
 {
@@ -30,6 +34,8 @@ protected:
 
 public:
     Button(const std::u16string& buttonText, sf::Vector2u windowResolution);
+
+    Action* act = nullptr;
    
     void draw(sf::RenderWindow* window) override;
     sf::Rect<unsigned> area() override;
