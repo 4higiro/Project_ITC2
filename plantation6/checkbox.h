@@ -50,9 +50,11 @@ private:
 
 
 
-    sf::Texture m_normalTexture;      // Текстура для обычного состояния
-    sf::Texture m_hoverTexture;       // Текстура при наведении
+    sf::Texture m_uncheckedTexture;
+    sf::Texture m_uncheckedHoveredTexture;
     sf::Texture m_checkedTexture;
+    sf::Texture m_checkedHoveredTexture;
+    
 
  
     sf::Color m_textColor = sf::Color(255, 0, 0);        // Цвет текста

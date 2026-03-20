@@ -36,7 +36,7 @@ void Button::mousePressedEvent(unsigned x, unsigned y, sf::Mouse::Button button)
     if (button == sf::Mouse::Left) {
         isPressed = true;
         shape.setFillColor(pressedColor);
-        act->doAction();
+        if (act) act->doAction();
     }
 }
 

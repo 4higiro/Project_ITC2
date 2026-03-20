@@ -6,9 +6,10 @@ CheckBox::CheckBox(sf::Vector2u res, const std::u16string& text)
 {
     m_realsize = m_size * m_winHeight / 1000.0;
 
-    m_normalTexture.loadFromFile("resources/gg.png");
-    m_hoverTexture.loadFromFile("resources/gg1.png");
+    m_checkedHoveredTexture.loadFromFile("resources/gg1.png");
     m_checkedTexture.loadFromFile("resources/gg2.png");
+    m_uncheckedHoveredTexture.loadFromFile("resources/gg3.png");
+    m_uncheckedTexture.loadFromFile("resources/gg4.png");
     setupGraphics();
 
 }
@@ -94,7 +95,7 @@ void CheckBox::setupGraphics()
     m_box.setOutlineThickness(2);
     m_box.setOutlineColor(m_outlineColor);
 
-    m_box.setTexture(&m_normalTexture);
+    m_box.setTexture(&m_uncheckedTexture);
 
 
     // Настройка шрифта
@@ -123,20 +124,24 @@ void CheckBox::centerText()
 
 void CheckBox::updateTexture()
 {
-    if (m_checked)
+    if (m_checked && m_hovered)
     {
         // Если отмечен и есть текстура для отмеченного состояния
-        m_box.setTexture(&m_checkedTexture);
+        m_box.setTexture(&m_checkedHoveredTexture);
     }
-    else if (m_hovered)
+    else if (m_checked && !m_hovered)
     {
         // Если наведен курсор и есть текстура для наведения
-        m_box.setTexture(&m_hoverTexture);
+        m_box.setTexture(&m_checkedTexture);
     }
-    else 
+    else if (!m_checked && m_hovered)
     {
         // Обычное состояние
-        m_box.setTexture(&m_normalTexture);
+        m_box.setTexture(&m_uncheckedHoveredTexture);
+    }
+    else
+    {
+        m_box.setTexture(&m_uncheckedTexture);
     }
 }
 
