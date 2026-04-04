@@ -33,13 +33,14 @@ protected:
     void mouseMissed() override;
 
 public:
-    Button(const std::u16string& buttonText, sf::Vector2u windowResolution);
+    Button(sf::Vector2u windowResolution);
 
     Action* act = nullptr;
    
     void draw(sf::RenderWindow* window) override;
     sf::Rect<unsigned> area() override;
-
+    void setName(const std::u16string& buttonText);
+    std::u16string getName();
     void setPosition(sf::Vector2u pos);
     sf::Vector2u getPosition();
     void setSize(sf::Vector2u newSize);

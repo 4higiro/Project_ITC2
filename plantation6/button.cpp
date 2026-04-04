@@ -1,17 +1,12 @@
 #include "Button.h"
 
-Button::Button(const std::u16string& buttonText, sf::Vector2u windowResolution)
+Button::Button(sf::Vector2u windowResolution)
 {
     real_size.x = size.x / 2000.0 * windowResolution.x;
     real_size.y = size.y / 1000.0 * windowResolution.y;
     winResolution = windowResolution;
 
     font.loadFromFile("resources/Strogo-Regular.ttf");
-
-    text.setString(sf::String::fromUtf16(buttonText.begin(), buttonText.end()));
-    text.setFont(font);
-    text.setCharacterSize(20);
-    text.setFillColor(textColor);
 
     shape.setSize(sf::Vector2f(real_size.x, real_size.y));
     shape.setFillColor(normalColor);
@@ -106,4 +101,17 @@ void Button::setSize(sf::Vector2u newSize)
 sf::Vector2u Button::getSize()
 {
     return size;
+}
+
+void Button:: setName(const std::u16string& buttonText)
+{
+    text.setString(sf::String::fromUtf16(buttonText.begin(), buttonText.end()));
+    text.setFont(font);
+    text.setCharacterSize(20);
+    text.setFillColor(textColor);
+}
+
+std::u16string Button::getName()
+{
+    return u"text";
 }
