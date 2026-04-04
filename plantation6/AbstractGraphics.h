@@ -39,8 +39,8 @@ public:
             is_mouse_hover = area().contains(sf::Vector2u(e.mouseMove.x, e.mouseMove.y));
             break;
         case sf::Event::EventType::MouseWheelScrolled:
-            mouseScrollEvent(e.mouseWheel.x, e.mouseWheel.y, e.mouseWheel.delta);
-            is_mouse_hover = area().contains(sf::Vector2u(e.mouseWheel.x, e.mouseWheel.y));
+            mouseScrollEvent(e.mouseWheelScroll.x, e.mouseWheelScroll.y, e.mouseWheelScroll.delta);
+            is_mouse_hover = area().contains(sf::Vector2u(e.mouseWheelScroll.x, e.mouseWheelScroll.y));
             break;
         case sf::Event::EventType::KeyPressed:
             keyPressedEvent(e.key.code, e.key.control, e.key.alt, e.key.shift);
