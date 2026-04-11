@@ -39,6 +39,9 @@
     <ClCompile Include="Label.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="load_mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="extlibs\bin\x64\sfml-audio-2.dll">
@@ -688,6 +691,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Label.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="load_mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

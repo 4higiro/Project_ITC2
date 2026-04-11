@@ -376,6 +376,7 @@ copy /Y "$(SolutionDir)resources"  "$(TargetDir)resources\"</Command>
     <ClCompile Include="glad.c" />
     <ClCompile Include="ItemBar.cpp" />
     <ClCompile Include="Label.cpp" />
+    <ClCompile Include="load_mesh.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main_menu.cpp" />
   </ItemGroup>
@@ -598,6 +599,7 @@ copy /Y "$(SolutionDir)resources"  "$(TargetDir)resources\"</Command>
     <ClInclude Include="extlibs\include\SFML\Window\WindowStyle.hpp" />
     <ClInclude Include="ItemBar.h" />
     <ClInclude Include="Label.h" />
+    <ClInclude Include="load_mesh.h" />
     <ClInclude Include="main_menu.h" />
   </ItemGroup>
   <ItemGroup>

@@ -80,3 +80,59 @@ mesh_data load_mesh(std::string path)
     f.close();
     return mesh_data;
 }
+mesh_animation load_mesh_folder(std::string folder)
+{
+    mesh_animation end;
+    std::filesystem::path papka_file(folder);
+    std::vector<mesh_data> a;
+    std::string imp = folder + "/all_mesh";
+    std::filesystem::path all_mesh(imp);
+    std::filesystem::create_directory(all_mesh);
+    int i = 0;
+
+    for (auto const& dir_entry : std::filesystem::directory_iterator(papka_file))
+    {
+        if (dir_entry.path().extension() == ".ply")
+        {
+            ++i;
+            std::string filename = dir_entry.path().filename().string();
+            std::filesystem::path dest = all_mesh / filename;
+            std::filesystem::copy_file(dir_entry.path(), dest);
+        }
+    }
+    int k = 0;
+    std::string text = folder + "/all_mesh/mesh_0.ply";
+    std::string x = folder + "/all_mesh/mesh_";
+    std::string y = ".ply";
+    a.resize(i);
+    for (int j = 0;j < i;++j)
+    {
+        for (auto const& dir_entry : std::filesystem::directory_iterator(all_mesh))
+        {
+            if (dir_entry.path() == text)
+            {
+                ++k;
+                text = x + std::to_string(j + 1) + y;
+                a[j] = load_mesh(dir_entry.path().string());
+                break;
+            }
+        }
+
+    }
+
+
+    if (k == i)
+    {
+
+        end.valid = true;
+        end.animation = a;
+        return end;
+
+    }
+    else
+    {
+        end.valid = false;
+        return end;
+
+    }
+}
