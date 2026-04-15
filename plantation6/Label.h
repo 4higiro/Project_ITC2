@@ -1,8 +1,11 @@
 #pragma once
-#include "AbstractGraphics.h"
+
 #include <SFML/Graphics.hpp>
 #include <string> 
-class Label : public AbstractGraphics
+
+#include "EventProcessor.h"
+
+class Label : public EventProcessor
 {
 public:
     // Конструктор 1: с позицией, размером и текстом
@@ -20,8 +23,8 @@ public:
     void setColor(sf::Color color);
 
     // Переопределение виртуальных методов
-    void draw(sf::RenderWindow* window) override;
-    sf::Rect<unsigned> area() override;
+    void render(sf::RenderWindow* window) override;
+    sf::Rect<unsigned> mouseArea() override;
 
 private:
     void setupGraphics();

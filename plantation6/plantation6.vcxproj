@@ -371,14 +371,14 @@ copy /Y "$(SolutionDir)resources"  "$(TargetDir)resources\"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="button.cpp" />
-    <ClCompile Include="checkbox.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="CheckBox.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="ItemBar.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="load_mesh.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="main_menu.cpp" />
+    <ClCompile Include="MainMenu.cpp" />
     <ClCompile Include="Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -497,9 +497,9 @@ copy /Y "$(SolutionDir)resources"  "$(TargetDir)resources\"</Command>
     <Library Include="extlibs\lib\x86\vorbisfile.lib" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AbstractGraphics.h" />
-    <ClInclude Include="button.h" />
-    <ClInclude Include="checkbox.h" />
+    <ClInclude Include="EventProcessor.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="CheckBox.h" />
     <ClInclude Include="extlibs\include\SFML\Audio.hpp" />
     <ClInclude Include="extlibs\include\SFML\Audio\AlResource.hpp" />
     <ClInclude Include="extlibs\include\SFML\Audio\Export.hpp" />
@@ -601,7 +601,7 @@ copy /Y "$(SolutionDir)resources"  "$(TargetDir)resources\"</Command>
     <ClInclude Include="ItemBar.h" />
     <ClInclude Include="Label.h" />
     <ClInclude Include="load_mesh.h" />
-    <ClInclude Include="main_menu.h" />
+    <ClInclude Include="MainMenu.h" />
     <ClInclude Include="Scene.h" />
   </ItemGroup>
   <ItemGroup>

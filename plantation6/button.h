@@ -1,14 +1,16 @@
 #pragma once
-#include "AbstractGraphics.h"
+
 #include <iostream>
 #include <string>
+
+#include "EventProcessor.h"
 
 class Action {
 public:
     virtual void doAction() = 0;
 };
 
-class Button : public AbstractGraphics 
+class Button : public EventProcessor
 {
 private:
     sf::RectangleShape shape;
@@ -29,16 +31,16 @@ private:
 protected:
     void mousePressedEvent(unsigned x, unsigned y, sf::Mouse::Button button) override;
     void mouseReleasedEvent(unsigned x, unsigned y, sf::Mouse::Button button) override;
-    void mouseHit() override;
-    void mouseMissed() override;
+    void mouseHitEvent() override;
+    void mouseMissedEvent() override;
 
 public:
     Button(sf::Vector2u windowResolution);
 
     Action* act = nullptr;
    
-    void draw(sf::RenderWindow* window) override;
-    sf::Rect<unsigned> area() override;
+    void render(sf::RenderWindow* window) override;
+    sf::Rect<unsigned> mouseArea() override;
     void setName(const std::u16string& buttonText);
     std::u16string getName();
     void setPosition(sf::Vector2u pos);

@@ -1,10 +1,12 @@
 #pragma once
-#include "AbstractGraphics.h"
-#include "Label.h"
+
 #include <iostream>
 #include <string>
 #include <vector>
 #include <array>
+
+#include "EventProcessor.h"
+#include "Label.h"
 
 struct Item
 {
@@ -13,7 +15,7 @@ struct Item
 	bool isEmptyItem = true;
 };
 
-class ItemBar : public AbstractGraphics
+class ItemBar : public EventProcessor
 {
 private:
 	std::array<sf::RectangleShape, 5> boxes;
@@ -39,8 +41,8 @@ protected:
 public:
 	ItemBar(sf::Vector2u windowResolution);
 
-	void draw(sf::RenderWindow* window) override;
-	sf::Rect<unsigned> area() override;
+	void render(sf::RenderWindow* window) override;
+	sf::Rect<unsigned> mouseArea() override;
 
 	void setPosition(sf::Vector2u pos);
 	sf::Vector2u getPosition();

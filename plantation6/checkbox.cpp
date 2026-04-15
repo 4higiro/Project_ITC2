@@ -1,4 +1,5 @@
-#include "checkbox.h"
+#include "CheckBox.h"
+
 #include <iostream>
 
 CheckBox::CheckBox(sf::Vector2u res, const std::u16string& text)
@@ -43,9 +44,9 @@ void CheckBox::updatePosition()
     centerText();
 }
 
-void CheckBox::draw(sf::RenderWindow* window)
+void CheckBox::render(sf::RenderWindow* window)
 {
-    if (!isVisible() || !window) return;
+    if (!isActive()) return;
 
     // Рисуем рамку чекбокса
     window->draw(m_box);
@@ -54,7 +55,7 @@ void CheckBox::draw(sf::RenderWindow* window)
     window->draw(m_text);
 }
 
-sf::Rect<unsigned> CheckBox::area()
+sf::Rect<unsigned> CheckBox::mouseArea()
 {
     float textWidth = m_text.getLocalBounds().width;
     return sf::Rect<unsigned>(
@@ -75,12 +76,12 @@ void CheckBox::mousePressedEvent(unsigned x, unsigned y, sf::Mouse::Button butto
 }
 
 
-void CheckBox::mouseHit()
+void CheckBox::mouseHitEvent()
 {
     m_hovered = true;
     updateTexture();
 }
-void CheckBox::mouseMissed()
+void CheckBox::mouseMissedEvent()
 {
     m_hovered = false;
     updateTexture();

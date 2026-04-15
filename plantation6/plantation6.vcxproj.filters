@@ -21,19 +21,19 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="checkbox.cpp">
+    <ClCompile Include="CheckBox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="glad.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="button.cpp">
+    <ClCompile Include="Button.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ItemBar.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main_menu.cpp">
+    <ClCompile Include="MainMenu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Label.cpp">
@@ -678,19 +678,19 @@
     <ClInclude Include="extlibs\include\SFML\Window\WindowStyle.hpp">
       <Filter>Libraries</Filter>
     </ClInclude>
-    <ClInclude Include="AbstractGraphics.h">
+    <ClInclude Include="EventProcessor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="checkbox.h">
+    <ClInclude Include="CheckBox.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="button.h">
+    <ClInclude Include="Button.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ItemBar.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="main_menu.h">
+    <ClInclude Include="MainMenu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Label.h">

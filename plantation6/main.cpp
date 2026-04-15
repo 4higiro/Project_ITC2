@@ -1,8 +1,7 @@
-#include <SFML/Window.hpp>
 #include <iostream>
 
-#include "main_menu.h"
-#include "AbstractGraphics.h"
+#include "EventProcessor.h"
+#include "MainMenu.h"
 #include "Scene.h"
 
 void main()
@@ -35,10 +34,10 @@ void main()
 	main_menu.setSettingsButton(&settings_button);
 	main_menu.setAchievementsButton(&achievements_button);
 
-	AbstractGraphics* draw_objects[] = {
-		&main_menu,& play_button,& settings_button,& achievements_button
+	EventProcessor* event_objects[] = {
+		&main_menu, &play_button, &settings_button, &achievements_button
 	};
-	constexpr int n_draw_objects = sizeof(draw_objects) / sizeof(AbstractGraphics*);
+	constexpr int n_draw_objects = sizeof(event_objects) / sizeof(EventProcessor*);
 	
 	while (main_window.isOpen()) // цикл отрисовки кадра
 	{
@@ -67,7 +66,7 @@ void main()
 
 			for (int i = 0; i < n_draw_objects; ++i)
 			{
-				if (draw_objects[i] && draw_objects[i]->isVisible())
+				if (event_objects[i] && event_objects[i]->isActive())
 				{
 					if (main_window_event.type == sf::Event::EventType::MouseButtonPressed
 					 || main_window_event.type == sf::Event::EventType::MouseButtonReleased
@@ -79,17 +78,17 @@ void main()
 							pos = { (unsigned)main_window_event.mouseMove.x, (unsigned)main_window_event.mouseMove.y };
 						if (main_window_event.type == sf::Event::EventType::MouseWheelScrolled)
 							pos = { (unsigned)main_window_event.mouseWheel.x, (unsigned)main_window_event.mouseWheel.y };
-						if (draw_objects[i]->area().contains(pos) || draw_objects[i]->isMouseHover()) draw_objects[i]->event(main_window_event);
+						if (event_objects[i]->mouseArea().contains(pos) || event_objects[i]->isMouseHover()) event_objects[i]->event(main_window_event);
 					}
-					else draw_objects[i]->event(main_window_event);
+					else event_objects[i]->event(main_window_event);
 				}
 			}
 		}
 
 		for (int i = 0; i < n_draw_objects; ++i)
 		{
-			if (draw_objects[i]->isVisible())
-				draw_objects[i]->draw(&main_window);
+			if (event_objects[i]->isActive())
+				event_objects[i]->render(&main_window);
 		}
 
 		main_window.popGLStates();

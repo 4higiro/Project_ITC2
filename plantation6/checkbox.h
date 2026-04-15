@@ -1,10 +1,11 @@
 #pragma once
 
-#include "AbstractGraphics.h"
 #include <SFML/Graphics.hpp>
 #include <string>
 
-class CheckBox : public AbstractGraphics
+#include "EventProcessor.h"
+
+class CheckBox : public EventProcessor
 {
 public:
     // Конструктор
@@ -19,13 +20,13 @@ public:
     void setPosition(sf::Vector2u pos);
 
     // Переопределение виртуальных методов
-    void draw(sf::RenderWindow* window) override;
-    sf::Rect<unsigned> area() override;
+    void render(sf::RenderWindow* window) override;
+    sf::Rect<unsigned> mouseArea() override;
 
 protected:
     void mousePressedEvent(unsigned x, unsigned y, sf::Mouse::Button button) override;
-    void mouseHit() override;
-    void mouseMissed() override;
+    void mouseHitEvent() override;
+    void mouseMissedEvent() override;
 
 private:
     void setupGraphics();

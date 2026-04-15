@@ -57,13 +57,13 @@ void Label::setColor(sf::Color color)
     m_text.setFillColor(m_color);
 }
 
-void Label::draw(sf::RenderWindow* window)
+void Label::render(sf::RenderWindow* window)
 {
-    if (!isVisible() || !window) return;
+    if (!isActive()) return;
     window->draw(m_text);
 }
 
-sf::Rect<unsigned> Label::area()
+sf::Rect<unsigned> Label::mouseArea()
 {
     return sf::Rect<unsigned>(
         static_cast<unsigned>(m_position.x),

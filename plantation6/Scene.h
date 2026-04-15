@@ -1,7 +1,6 @@
 #pragma once
 
 #include <glad/glad.h>
-#include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <fstream>

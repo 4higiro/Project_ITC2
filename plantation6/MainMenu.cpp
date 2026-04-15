@@ -1,4 +1,5 @@
-#include "main_menu.h"
+#include "MainMenu.h"
+
 #include <iostream>
 #include <sstream>
 
@@ -52,17 +53,17 @@ void MainMenu::setAchievementsButton(Button* btn)
   
 }
 
-void MainMenu::draw(sf::RenderWindow* window)
+void MainMenu::render(sf::RenderWindow* window)
 {
-    if (!isVisible()) return;
+    if (!isActive()) return;
     window->draw(background);
 
-    if (play) play->draw(window);
-    if (settings) settings->draw(window);
-    if (achievements) achievements->draw(window);
+    if (play) play->render(window);
+    if (settings) settings->render(window);
+    if (achievements) achievements->render(window);
 }
 
-sf::Rect<unsigned> MainMenu::area()
+sf::Rect<unsigned> MainMenu::mouseArea()
 {
     return sf::Rect<unsigned>(0, 0, windowSize.x, windowSize.y);
 }

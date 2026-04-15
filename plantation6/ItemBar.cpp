@@ -1,5 +1,5 @@
-// ItemBar.cpp
 #include "ItemBar.h"
+
 #include <SFML/Graphics.hpp>
 #include <string>
 
@@ -58,7 +58,7 @@ void ItemBar::setupGraphics()
     }
 }
 
-void ItemBar::draw(sf::RenderWindow* window)
+void ItemBar::render(sf::RenderWindow* window)
 {
     setupGraphics();
 
@@ -67,10 +67,10 @@ void ItemBar::draw(sf::RenderWindow* window)
         window->draw(boxes[i]);
     }
 
-    currentName.draw(window);
+    currentName.render(window);
 }
 
-sf::Rect<unsigned> ItemBar::area()
+sf::Rect<unsigned> ItemBar::mouseArea()
 {
     return sf::Rect<unsigned>(0, 0, winResolution.x, winResolution.y);
 }

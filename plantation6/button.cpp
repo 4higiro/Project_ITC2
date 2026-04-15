@@ -13,15 +13,15 @@ Button::Button(sf::Vector2u windowResolution)
    
 }
 
-void Button::draw(sf::RenderWindow* window)
+void Button::render(sf::RenderWindow* window)
 {
-    if (window) {
+    if (isActive()) {
         window->draw(shape);
         window->draw(text);
     }
 }
 
-sf::Rect<unsigned> Button::area()
+sf::Rect<unsigned> Button::mouseArea()
 {
     return sf::Rect<unsigned>(position.x, position.y, real_size.x, real_size.y);
 }
@@ -49,7 +49,7 @@ void Button::mouseReleasedEvent(unsigned x, unsigned y, sf::Mouse::Button button
     }
 }
 
-void Button::mouseHit()
+void Button::mouseHitEvent()
 {
     isHovered = true;
 
@@ -58,7 +58,7 @@ void Button::mouseHit()
     }
 }
 
-void Button::mouseMissed()
+void Button::mouseMissedEvent()
 {
     isHovered = false;
 

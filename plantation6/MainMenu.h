@@ -1,12 +1,12 @@
 #pragma once
 
-#include "AbstractGraphics.h"
-#include "Button.h"
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include <memory>
 
-class MainMenu : public AbstractGraphics
+#include "EventProcessor.h"
+#include "Button.h"
+
+class MainMenu : public EventProcessor
 {
 public:
     MainMenu(sf::Vector2u windowSize);
@@ -19,8 +19,8 @@ public:
 
 
     // Переопределённые методы AbstractGraphics
-    void draw(sf::RenderWindow* window) override;
-    sf::Rect<unsigned> area() override;
+    void render(sf::RenderWindow* window) override;
+    sf::Rect<unsigned> mouseArea() override;
 
 protected:
     void showEvent() override;
