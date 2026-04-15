@@ -1,21 +1,22 @@
 #include "Button.h"
 
-Button::Button(sf::Vector2u windowResolution)
+Button::Button(sf::Vector2u window_resolution)
 {
-    real_size.x = size.x / 2000.0 * windowResolution.x;
-    real_size.y = size.y / 1000.0 * windowResolution.y;
-    winResolution = windowResolution;
+    real_size.x = size.x / 2000.0 * window_resolution.x;
+    real_size.y = size.y / 1000.0 * window_resolution.y;
+    win_resolution = window_resolution;
 
     font.loadFromFile("resources/Strogo-Regular.ttf");
 
     shape.setSize(sf::Vector2f(real_size.x, real_size.y));
-    shape.setFillColor(normalColor);
+    shape.setFillColor(normal_color);
    
 }
 
 void Button::render(sf::RenderWindow* window)
 {
-    if (isActive()) {
+    if (isActive()) 
+    {
         window->draw(shape);
         window->draw(text);
     }
@@ -28,43 +29,37 @@ sf::Rect<unsigned> Button::mouseArea()
 
 void Button::mousePressedEvent(unsigned x, unsigned y, sf::Mouse::Button button)
 {
-    if (button == sf::Mouse::Left) {
-        isPressed = true;
-        shape.setFillColor(pressedColor);
+    if (button == sf::Mouse::Left) 
+    {
+        is_pressed = true;
+        shape.setFillColor(pressed_color);
         if (act) act->doAction();
     }
 }
 
 void Button::mouseReleasedEvent(unsigned x, unsigned y, sf::Mouse::Button button)
 {
-    if (button == sf::Mouse::Left) {
-        isPressed = false;
+    if (button == sf::Mouse::Left) 
+    {
+        is_pressed = false;
 
-        if (isHovered) {
-            shape.setFillColor(hoverColor);
-        }
-        else {
-            shape.setFillColor(normalColor);
-        }
+        if (is_hovered) shape.setFillColor(hover_color);
+        else shape.setFillColor(normal_color);
     }
 }
 
 void Button::mouseHitEvent()
 {
-    isHovered = true;
+    is_hovered = true;
 
-    if (!isPressed) {
-        shape.setFillColor(hoverColor);
-    }
+    if (!is_pressed) shape.setFillColor(hover_color);
 }
 
 void Button::mouseMissedEvent()
 {
-    isHovered = false;
+    is_hovered = false;
 
-    if (!isPressed) {
-        shape.setFillColor(normalColor);
-    }
+    if (!is_pressed) shape.setFillColor(normal_color);
 }
 
 void Button::setPosition(sf::Vector2u pos)
@@ -72,10 +67,10 @@ void Button::setPosition(sf::Vector2u pos)
     position = pos;
     shape.setPosition(sf::Vector2f(pos.x, pos.y));
 
-    sf::FloatRect textBounds = text.getLocalBounds();
+    sf::FloatRect text_bounds = text.getLocalBounds();
     text.setPosition(
-        pos.x + (real_size.x - textBounds.width) / 2,
-        pos.y + (real_size.y - textBounds.height) / 2
+        pos.x + (real_size.x - text_bounds.width) / 2,
+        pos.y + (real_size.y - text_bounds.height) / 2
     );
 }
 
@@ -84,11 +79,11 @@ sf::Vector2u Button::getPosition()
     return position;
 }
 
-void Button::setSize(sf::Vector2u newSize)
+void Button::setSize(sf::Vector2u new_size)
 {
-    size = newSize;
-    real_size.x = size.x / 2000.0 * winResolution.x;
-    real_size.y = size.y / 1000.0 * winResolution.y;
+    size = new_size;
+    real_size.x = size.x / 2000.0 * win_resolution.x;
+    real_size.y = size.y / 1000.0 * win_resolution.y;
     shape.setSize(sf::Vector2f(real_size.x, real_size.y));
 
     sf::FloatRect textBounds = text.getLocalBounds();
@@ -103,15 +98,16 @@ sf::Vector2u Button::getSize()
     return size;
 }
 
-void Button:: setName(const std::u16string& buttonText)
+void Button::setName(const std::u16string& button_text)
 {
-    text.setString(sf::String::fromUtf16(buttonText.begin(), buttonText.end()));
+    text.setString(sf::String::fromUtf16(button_text.begin(), button_text.end()));
     text.setFont(font);
     text.setCharacterSize(20);
-    text.setFillColor(textColor);
+    text.setFillColor(text_color);
+    name = button_text;
 }
 
 std::u16string Button::getName()
 {
-    return u"text";
+    return name;
 }
