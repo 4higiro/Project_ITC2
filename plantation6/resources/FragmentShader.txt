@@ -1,0 +1,17 @@
+#version 330 core
+
+in vec3 fragment_color;
+in vec3 fragment_position;
+in vec3 fragment_normal;
+
+out vec3 result_color;
+
+uniform vec3 light_position;
+
+void main()
+{
+	vec3 light = normalize(light_position - fragment_position);
+	vec3 norm = fragment_normal;
+	float k = max(0.0f, 0.8f * dot(norm, light));
+	result_color = (0.2f + k) * fragment_color;
+}
