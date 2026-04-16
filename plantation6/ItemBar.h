@@ -12,34 +12,34 @@ struct Item
 {
 	std::u16string name;
 	sf::Texture texture;
-	bool isEmptyItem = true;
+	bool is_empty_item = true;
 };
 
 class ItemBar : public EventProcessor
 {
 private:
 	std::array<sf::RectangleShape, 5> boxes;
+	std::array<Item, 5> items;
 
-	std::vector<Item> items;
-	Label currentName = Label(u"");
+	Label current_name;
 
-	int selectionIndex = 0;
+	int selection_index = 0;
 
-	sf::Vector2u winResolution;
-	unsigned realSize;
+	sf::Vector2u win_resolution;
+	unsigned real_size;
 	unsigned size;
 	sf::Vector2u position = sf::Vector2u(0, 0);
-	static constexpr int maxItemsCount = 5;
 
-	sf::Color inColor = sf::Color(0, 0, 255);
-	sf::Color outColor = sf::Color(150, 150, 150);
-	sf::Color selectColor = sf::Color(0, 255, 255);
+	sf::Color in_color = sf::Color(0, 0, 255);
+	sf::Color out_color = sf::Color(150, 150, 150);
+	sf::Color select_color = sf::Color(0, 255, 255);
+	sf::Color text_color = sf::Color(0, 255, 0);
 
-	void setupGraphics();
+	void updateGeometry();
 protected:
 	void mouseScrollEvent(unsigned x, unsigned y, int delta) override;
 public:
-	ItemBar(sf::Vector2u windowResolution);
+	ItemBar(sf::Vector2u window_resolution);
 
 	void render(sf::RenderWindow* window) override;
 	sf::Rect<unsigned> mouseArea() override;

@@ -35,6 +35,11 @@ void Label::setColor(sf::Color col)
     text.setFillColor(color);
 }
 
+sf::Color Label::getColor()
+{
+    return color;
+}
+
 void Label::render(sf::RenderWindow* window)
 {
     if (!isActive()) return;

@@ -6,78 +6,52 @@
 ItemBar::ItemBar(sf::Vector2u windowResolution)
 {
     size = 50;
-    realSize = size / 1000.0 * windowResolution.y;
-    winResolution = windowResolution;
+    real_size = size / 1000.0 * windowResolution.y;
+    win_resolution = windowResolution;
 
-    for (int i = 0; i < maxItemsCount; ++i)
+    for (int i = 0; i < 5; ++i)
     {
-        boxes[i].setFillColor(inColor);
-        boxes[i].setOutlineColor(outColor);
+        boxes[i].setFillColor(in_color);
+        boxes[i].setOutlineColor(out_color);
         boxes[i].setOutlineThickness(3);
-        boxes[i].setSize({ static_cast<float>(realSize), static_cast<float>(realSize) });
-        boxes[i].setPosition({ static_cast<float>(i * (realSize + 6)), 0.0f });
     }
 
-    items.reserve(maxItemsCount);
+    current_name.setColor(text_color);
 
     clearItems();
-    setupGraphics();
+    updateGeometry();
 }
 
-void ItemBar::setupGraphics()
+void ItemBar::updateGeometry()
 {
-    for (int i = 0; i < maxItemsCount; ++i)
+    for (int i = 0; i < 5; ++i)
     {
-        boxes[i].setSize({ static_cast<float>(realSize), static_cast<float>(realSize) });
-        boxes[i].setPosition({ static_cast<float>(position.x + i * (realSize + 6)),
-                               static_cast<float>(position.y) });
-        // Проверяем, есть ли предмет в этой ячейке
-        if (i < static_cast<int>(items.size()))
-        {
-            boxes[i].setFillColor(sf::Color::Transparent);
-            boxes[i].setTexture(&items[i].texture);
-        }
-        else
-        {
-            // Ячейка без предмета - закрашенная
-            boxes[i].setFillColor(inColor);
-            boxes[i].setTexture(nullptr);
-        }
-        if (i == selectionIndex)
-        {
-
-            boxes[i].setOutlineColor(selectColor);
-            boxes[i].setOutlineThickness(3);
-        }
-        else
-        {
-           
-            boxes[i].setOutlineColor(outColor);
-            boxes[i].setOutlineThickness(1);
-        }
+        boxes[i].setSize({ static_cast<float>(real_size), static_cast<float>(real_size) });
+        boxes[i].setPosition({ static_cast<float>(position.x + i * (real_size + 6)), static_cast<float>(position.y) });
     }
+
+    current_name.setArea({ position.x, position.y + real_size, 5 * (real_size + 6), real_size });
 }
 
 void ItemBar::render(sf::RenderWindow* window)
 {
-    setupGraphics();
-
     for (int i = 0; i < 5; ++i)
     {
         window->draw(boxes[i]);
     }
 
-    currentName.render(window);
+    current_name.render(window);
 }
 
 sf::Rect<unsigned> ItemBar::mouseArea()
 {
-    return sf::Rect<unsigned>(0, 0, winResolution.x, winResolution.y);
+    return sf::Rect<unsigned>(0, 0, win_resolution.x, win_resolution.y);
 }
 
 void ItemBar::setPosition(sf::Vector2u pos)
 {
     position = pos;
+    updateGeometry();
 }
 
 sf::Vector2u ItemBar::getPosition()
@@ -88,7 +62,8 @@ sf::Vector2u ItemBar::getPosition()
 void ItemBar::setSize(unsigned newSize)
 {
     size = newSize;
-    realSize = size / 1000.0 * winResolution.y;
+    real_size = size / 1000.0 * win_resolution.y;
+    updateGeometry();
 }
 
 unsigned ItemBar::getSize()
@@ -98,37 +73,54 @@ unsigned ItemBar::getSize()
 
 bool ItemBar::addItem(Item newItem)
 {
-    if (items.size() < maxItemsCount)
+    for (int i = 0; i < 5; ++i)
     {
-        items.push_back(newItem);
-        boxes[items.size() - 1].setTexture(&newItem.texture);
-        return true;
+        if (items[i].is_empty_item)
+        {
+            items[i] = newItem;
+            boxes[i].setFillColor(sf::Color::Transparent);
+            boxes[i].setTexture(&newItem.texture);
+            return true;
+        }
     }
-    else return false;
+
+    return false;
 }
 
 void ItemBar::clearItems()
 {
-    items.clear();
     for (int i = 0; i < 5; ++i)
     {
+        boxes[i].setFillColor(in_color);
         boxes[i].setTexture(nullptr);
+        items[i].is_empty_item = true;
     }
-    selectionIndex = 0;
+    selection_index = 0;
 }
 
 Item ItemBar::getSelectedItem()
 {
-    if (!items.empty() && selectionIndex >= 0 && selectionIndex < static_cast<int>(items.size()))
-    {
-        return items[selectionIndex];
-    }
-    return Item();
+    return items[selection_index];
 }
 
 void ItemBar::mouseScrollEvent(unsigned x, unsigned y, int delta)
 {
-    selectionIndex += delta;
-    if (selectionIndex < 0) selectionIndex = 0;
-    if (selectionIndex >= maxItemsCount) selectionIndex = maxItemsCount - 1;
+    selection_index += delta;
+    if (selection_index < 0) selection_index = 0;
+    if (selection_index >= 5) selection_index = 4;
+
+    Item& currentItem = items[selection_index];
+    if (currentItem.is_empty_item)
+    {
+        current_name.setName(u"");
+    }
+    else
+    {
+        current_name.setName(currentItem.name);
+    }
+    
+    for (int i = 0; i < 5; ++i)
+    {
+        boxes[i].setOutlineColor(i == selection_index ? select_color : out_color);
+    }
 }
