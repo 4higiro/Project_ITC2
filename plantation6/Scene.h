@@ -6,6 +6,8 @@
 #include <fstream>
 #include <sstream>
 
+#include "LoadMesh.h"
+
 class Transformation
 {
 public:
@@ -39,14 +41,6 @@ public:
 
 private:
 	std::vector<float> projection;
-};
-
-struct MeshData
-{
-	std::vector<float> coords;
-	std::vector<float> normals;
-	std::vector<float> colors;
-	std::vector<unsigned> indices;
 };
 
 class Mesh

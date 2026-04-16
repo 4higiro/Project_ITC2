@@ -1,5 +1,6 @@
-#include "load_mesh.h"
-mesh_data load_mesh(std::string path)
+#include "LoadMesh.h"
+
+MeshData loadMesh(std::string path)
 {
     int size1;
     int size2;
@@ -7,20 +8,16 @@ mesh_data load_mesh(std::string path)
     std::string str;
     std::ifstream f;
     f.open(path);
-    mesh_data mesh_data;
-    if (f.is_open())
-    {
-        std::cout << "ply";
-    }
+    MeshData mesh_data;
     while (true)
     {
         f >> str;
         if (str == "vertex")
         {
             f >> size1;
-            mesh_data.color.resize(size1 * 3);
-            mesh_data.ncoord.resize(size1 * 3);
-            mesh_data.coord.resize(size1 * 3);
+            mesh_data.colors.resize(size1 * 3);
+            mesh_data.normals.resize(size1 * 3);
+            mesh_data.coords.resize(size1 * 3);
 
             break;
         }
@@ -48,15 +45,15 @@ mesh_data load_mesh(std::string path)
                 {
                     f >> du[k];
                 }
-                mesh_data.coord[0 + i * 3] = du[0];
-                mesh_data.coord[1 + i * 3] = du[1];
-                mesh_data.coord[2 + i * 3] = du[2];
-                mesh_data.ncoord[0 + i * 3] = du[3];
-                mesh_data.ncoord[1 + i * 3] = du[4];
-                mesh_data.ncoord[2 + i * 3] = du[5];
-                mesh_data.color[0 + i * 3] = du[6];
-                mesh_data.color[1 + i * 3] = du[7];
-                mesh_data.color[2 + i * 3] = du[8];
+                mesh_data.coords[0 + i * 3] = du[0];
+                mesh_data.coords[1 + i * 3] = du[1];
+                mesh_data.coords[2 + i * 3] = du[2];
+                mesh_data.normals[0 + i * 3] = du[3];
+                mesh_data.normals[1 + i * 3] = du[4];
+                mesh_data.normals[2 + i * 3] = du[5];
+                mesh_data.colors[0 + i * 3] = du[6];
+                mesh_data.colors[1 + i * 3] = du[7];
+                mesh_data.colors[2 + i * 3] = du[8];
 
             }
             for (int i = 0; i < size2; ++i)
@@ -80,11 +77,11 @@ mesh_data load_mesh(std::string path)
     f.close();
     return mesh_data;
 }
-mesh_animation load_mesh_folder(std::string folder)
+
+MeshAnimation loadAnimation(std::string folder)
 {
-    mesh_animation end;
+    MeshAnimation end;
     std::filesystem::path papka_file(folder);
-    std::vector<mesh_data> a;
     std::string imp = folder + "/all_mesh";
     std::filesystem::path all_mesh(imp);
     std::filesystem::create_directory(all_mesh);
@@ -104,7 +101,7 @@ mesh_animation load_mesh_folder(std::string folder)
     std::string text = folder + "/all_mesh/mesh_0.ply";
     std::string x = folder + "/all_mesh/mesh_";
     std::string y = ".ply";
-    a.resize(i);
+    end.resize(i);
     for (int j = 0;j < i;++j)
     {
         for (auto const& dir_entry : std::filesystem::directory_iterator(all_mesh))
@@ -113,7 +110,7 @@ mesh_animation load_mesh_folder(std::string folder)
             {
                 ++k;
                 text = x + std::to_string(j + 1) + y;
-                a[j] = load_mesh(dir_entry.path().string());
+                end[j] = loadMesh(dir_entry.path().string());
                 break;
             }
         }
@@ -121,18 +118,5 @@ mesh_animation load_mesh_folder(std::string folder)
     }
 
 
-    if (k == i)
-    {
-
-        end.valid = true;
-        end.animation = a;
-        return end;
-
-    }
-    else
-    {
-        end.valid = false;
-        return end;
-
-    }
+    return end;
 }
