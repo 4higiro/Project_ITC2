@@ -5,10 +5,13 @@
 
 #include "EventProcessor.h"
 #include "Button.h"
+#include "Label.h"
 
 class MainMenu : public EventProcessor
 {
 public:
+    MainMenu();
+
     void setPlayButton(Button* btn);
     void setSettingsButton(Button* btn);
     void setAchievementsButton(Button* btn);
@@ -22,4 +25,5 @@ protected:
 
 private:
     Button* play, *settings, *achievements;
+    Label name;
 };

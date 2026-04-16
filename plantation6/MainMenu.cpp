@@ -4,6 +4,13 @@
 #include <sstream>
 
 
+MainMenu::MainMenu()
+{
+    name.setArea({ 450, 150, 400, 100 });
+    name.setColor(sf::Color::Blue);
+    name.setName(u"Bot arena, by  ванториум");
+}
+
 void MainMenu::setPlayButton(Button* btn)
 {
     play = btn;
@@ -28,7 +35,14 @@ void MainMenu::setAchievementsButton(Button* btn)
     achievements->setSize(sf::Vector2u(400, 100));
 }
 
-void MainMenu::render(sf::RenderWindow* window) {}
+void MainMenu::render(sf::RenderWindow* window) 
+{
+    if (isActive())
+    {
+        name.render(window);
+    }
+}
+
 sf::Rect<unsigned> MainMenu::mouseArea() { return sf::Rect<unsigned>(); }
 
 void MainMenu::showEvent()

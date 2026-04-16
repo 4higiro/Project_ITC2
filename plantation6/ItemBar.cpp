@@ -35,6 +35,8 @@ void ItemBar::updateGeometry()
 
 void ItemBar::render(sf::RenderWindow* window)
 {
+    if (!isActive()) return;
+
     for (int i = 0; i < 5; ++i)
     {
         window->draw(boxes[i]);
