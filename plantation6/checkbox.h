@@ -8,18 +8,20 @@
 class CheckBox : public EventProcessor
 {
 public:
-    // Конструктор
-    CheckBox(sf::Vector2u res, const std::u16string& text = u"");
+    CheckBox(sf::Vector2u resolution);
     ~CheckBox() = default;
 
-    // Геттеры и сеттеры
     bool isChecked() const;
-    void setChecked(bool checked);
+    void setChecked(bool enabled);
 
     void setSize(unsigned size);
+    unsigned getSize();
     void setPosition(sf::Vector2u pos);
+    sf::Vector2u getPosition();
 
-    // Переопределение виртуальных методов
+    void setName(const std::u16string& text);
+    std::u16string getName();
+
     void render(sf::RenderWindow* window) override;
     sf::Rect<unsigned> mouseArea() override;
 
@@ -35,29 +37,23 @@ private:
     void updatePosition();
 
 private:
-    sf::Vector2u m_position = { 0,0 };
-    unsigned m_size=20;
-    unsigned m_realsize;
-    unsigned m_winHeight;
-    std::u16string m_label;
-    bool m_checked = false;
-    bool m_hovered = false;
+    sf::Vector2u position = { 0,0 };
+    unsigned size = 20;
+    unsigned real_size;
+    unsigned win_height;
+    std::u16string label;
+    bool checked = false;
+    bool hovered = false;
 
-    // Графические элементы
-    sf::RectangleShape m_box;
-    sf::Text m_text;
-    sf::Font m_font;
+    sf::RectangleShape box;
+    sf::Text text;
+    sf::Font font;
 
-
-
-
-    sf::Texture m_uncheckedTexture;
-    sf::Texture m_uncheckedHoveredTexture;
-    sf::Texture m_checkedTexture;
-    sf::Texture m_checkedHoveredTexture;
-    
-
+    sf::Texture unchecked_texture;
+    sf::Texture unchecked_hovered_texture;
+    sf::Texture checked_texture;
+    sf::Texture checked_hovered_texture;
  
-    sf::Color m_textColor = sf::Color(255, 0, 0);        // Цвет текста
-    sf::Color m_outlineColor = sf::Color(44, 62, 80);     // Цвет рамки
+    sf::Color text_color = sf::Color(255, 0, 0);
+    sf::Color outline_color = sf::Color(44, 62, 80);
 };
