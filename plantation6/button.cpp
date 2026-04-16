@@ -10,7 +10,6 @@ Button::Button(sf::Vector2u window_resolution)
 
     shape.setSize(sf::Vector2f(real_size.x, real_size.y));
     shape.setFillColor(normal_color);
-   
 }
 
 void Button::render(sf::RenderWindow* window)
@@ -42,7 +41,6 @@ void Button::mouseReleasedEvent(unsigned x, unsigned y, sf::Mouse::Button button
     if (button == sf::Mouse::Left) 
     {
         is_pressed = false;
-
         if (is_hovered) shape.setFillColor(hover_color);
         else shape.setFillColor(normal_color);
     }
@@ -86,10 +84,10 @@ void Button::setSize(sf::Vector2u new_size)
     real_size.y = size.y / 1000.0 * win_resolution.y;
     shape.setSize(sf::Vector2f(real_size.x, real_size.y));
 
-    sf::FloatRect textBounds = text.getLocalBounds();
+    sf::FloatRect text_bounds = text.getLocalBounds();
     text.setPosition(
-        position.x + (real_size.x - textBounds.width) / 2,
-        position.y + (real_size.y - textBounds.height) / 2
+        position.x + (real_size.x - text_bounds.width) / 2,
+        position.y + (real_size.y - text_bounds.height) / 2
     );
 }
 
@@ -104,6 +102,13 @@ void Button::setName(const std::u16string& button_text)
     text.setFont(font);
     text.setCharacterSize(20);
     text.setFillColor(text_color);
+
+    sf::FloatRect text_bounds = text.getLocalBounds();
+    text.setPosition(
+        position.x + (real_size.x - text_bounds.width) / 2,
+        position.y + (real_size.y - text_bounds.height) / 2
+    );
+
     name = button_text;
 }
 

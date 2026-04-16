@@ -8,39 +8,26 @@
 class Label : public EventProcessor
 {
 public:
-    // Конструктор 1: с позицией, размером и текстом
-    Label(sf::Rect<unsigned> area, const std::u16string& text = u"");
+    Label();
 
-    // Конструктор 2: только текст (с позицией по умолчанию)
-    Label(const std::u16string& text = u"");
+    void setName(const std::u16string& name);
+    std::u16string getName();
+    void setArea(sf::Rect<unsigned> rect);
+    void setColor(sf::Color col);
+    sf::Color getColor();
 
-    ~Label() = default;
-
-    // Методы для установки свойств
-    void setText(const std::u16string& text);
-    void setPosition(float x, float y);
-    void setSize(unsigned size);
-    void setColor(sf::Color color);
-
-    // Переопределение виртуальных методов
     void render(sf::RenderWindow* window) override;
     sf::Rect<unsigned> mouseArea() override;
 
 private:
-    void setupGraphics();
-    void fitTextToArea();     // Новый метод для подбора размера шрифта
-    void centerText();        // Новый метод для центрирования
+    void centerText();
 
 private:
-    sf::Vector2f m_position = { 0, 0 };
-    float m_width = 0;        // Ширина области
-    float m_height = 0;       // Высота области
-    std::u16string m_label;
+    sf::Rect<unsigned> area;
+    std::u16string label;
 
-    // Графические элементы
-    sf::Text m_text;
-    sf::Font m_font;
-    sf::Color m_color = sf::Color::Red;
-
+    sf::Text text;
+    sf::Font font;
+    sf::Color color = sf::Color::Red;
 };
 
