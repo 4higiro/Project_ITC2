@@ -4,43 +4,20 @@
 #include <sstream>
 
 
-MainMenu::MainMenu(sf::Vector2u windowSize)
-    : play(nullptr), settings(nullptr), achievements(nullptr), windowSize(windowSize)
-{
-    background.setSize(sf::Vector2f(static_cast<float>(windowSize.x), static_cast<float>(windowSize.y)));
-
-    // Загружаем текстуру из папки resources
-    if (backgroundTexture.loadFromFile("resources/menu_background.png"))
-    {
-        background.setTexture(&backgroundTexture);
-    }
-    else
-    {
-        // Если текстура не загрузилась, используем запасной цвет
-        background.setFillColor(sf::Color(50, 50, 80));
-    }
-}
-
 void MainMenu::setPlayButton(Button* btn)
 {
     play = btn;
     play->setName(u"Play");
     play->setPosition(sf::Vector2u(800, 300));
     play->setSize(sf::Vector2u(400, 100));
-
-    
-
 }
 
 void MainMenu::setSettingsButton(Button* btn)
 {
     settings = btn;
-    settings->setName(u"settings");
+    settings->setName(u"Settings");
     settings->setPosition(sf::Vector2u(800, 450));
     settings->setSize(sf::Vector2u(400, 100));
-   
-
-
 }
 
 void MainMenu::setAchievementsButton(Button* btn)
@@ -49,24 +26,10 @@ void MainMenu::setAchievementsButton(Button* btn)
     achievements->setName(u"Achievements");
     achievements->setPosition(sf::Vector2u(800, 600));
     achievements->setSize(sf::Vector2u(400, 100));
-
-  
 }
 
-void MainMenu::render(sf::RenderWindow* window)
-{
-    if (!isActive()) return;
-    window->draw(background);
-
-    if (play) play->render(window);
-    if (settings) settings->render(window);
-    if (achievements) achievements->render(window);
-}
-
-sf::Rect<unsigned> MainMenu::mouseArea()
-{
-    return sf::Rect<unsigned>(0, 0, windowSize.x, windowSize.y);
-}
+void MainMenu::render(sf::RenderWindow* window) {}
+sf::Rect<unsigned> MainMenu::mouseArea() { return sf::Rect<unsigned>(); }
 
 void MainMenu::showEvent()
 {

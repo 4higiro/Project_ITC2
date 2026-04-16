@@ -29,7 +29,7 @@ void main()
 	Button play_button(resolution);
 	Button settings_button(resolution);
 	Button achievements_button(resolution);
-	MainMenu main_menu(resolution);
+	MainMenu main_menu;
 	main_menu.setPlayButton(&play_button);
 	main_menu.setSettingsButton(&settings_button);
 	main_menu.setAchievementsButton(&achievements_button);
