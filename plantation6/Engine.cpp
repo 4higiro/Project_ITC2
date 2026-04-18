@@ -250,10 +250,12 @@ bool isPointInFace(sf::Vector3f p0, sf::Vector3f p1, sf::Vector3f p2, sf::Vector
     return (u >= -eps) && (v >= -eps) && (u + v <= 1.0f + eps);
 }
 
-void Location::correctionSpeed(sf::Vector3f S, sf::Vector3f& V)
+sf::Vector3f Location::getSupportForce(float m, sf::Vector3f S, sf::Vector3f V)
 {
-    float len_V = sqrt(V.x * V.x + V.y * V.y + V.z * V.z);
-    if (len_V < 1E-6) return;
+    sf::Vector3f Fsupport = { 0.0f, 0.0f, 0.0f };
+    const float threshold = 0.1f;
+    const float k = 1000.0f;
+    const float damping = 10.0f;
 
     for (int i = 0; i < 11; ++i)
     {
@@ -274,20 +276,32 @@ void Location::correctionSpeed(sf::Vector3f S, sf::Vector3f& V)
 
             sf::Vector3f r = Sp - S;
             float len_r = sqrt(r.x * r.x + r.y * r.y + r.z * r.z);
-            if (len_r < 1E-6) continue;
+            if (len_r < 1E-6 || len_r > threshold) continue;
 
-            sf::Vector3f n = { r.x / len_r, r.y / len_r, r.z / len_r };
-
+            sf::Vector3f n = { -r.x / len_r, -r.y / len_r, -r.z / len_r };
             float Vn = V.x * n.x + V.y * n.y + V.z * n.z;
+            float F = k * (threshold - len_r) - damping * Vn;
 
-            if (Vn > 0 && Vn >= len_r)
+            if (F > 0)
             {
-                V.x -= Vn * n.x;
-                V.y -= Vn * n.y;
-                V.z -= Vn * n.z;
+                Fsupport.x += F * n.x;
+                Fsupport.y += F * n.y;
+                Fsupport.z += F * n.z;
             }
         }
     }
+
+    return Fsupport;
+}
+
+sf::Vector3f Location::getFrictionalForce(float m, sf::Vector3f S, sf::Vector3f V)
+{
+    float len_V = sqrt(V.x * V.x + V.y * V.y + V.z * V.z);
+    if (len_V < 1E-6) return sf::Vector3f(0.0f, 0.0f, 0.0f);
+
+    float x = V.x / len_V;
+    float y = V.y / len_V;
+    return sf::Vector3f(-9.8f * x, 0.0f, -9.8f * y) * m;
 }
 
 Engine::Engine(float mass, sf::Vector3f S0, sf::Vector3f V0)
@@ -306,8 +320,7 @@ sf::Vector3f Engine::calcPosition(Location& loc, bool reset_time)
     auto t1 = std::chrono::high_resolution_clock::now();
     float dt = std::chrono::duration_cast<std::chrono::microseconds>(t1 - t0).count() * 1E-6;
 
-    sf::Vector3f F = sf::Vector3f(0.0, -9.8f, 0.0f) * m + Fext;
-    loc.correctionSpeed(S, V);
+    sf::Vector3f F = sf::Vector3f(0.0, -9.8f, 0.0f) * m + Fext + loc.getFrictionalForce(m, S, V) + loc.getSupportForce(m, S, V);
 
     sf::Vector3f Vt = F * (1.0f / m);
     sf::Vector3f St = V;
@@ -317,4 +330,19 @@ sf::Vector3f Engine::calcPosition(Location& loc, bool reset_time)
     t0 = t1;
 
     return S;
+}
+
+sf::Vector3f Engine::getPosition()
+{
+    return S;
+}
+
+sf::Vector3f Engine::getSpeed()
+{
+    return V;
+}
+
+float Engine::getMass()
+{
+    return m;
 }
