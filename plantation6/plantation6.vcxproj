@@ -373,6 +373,7 @@ copy /Y "$(SolutionDir)resources"  "$(TargetDir)resources\"</Command>
   <ItemGroup>
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="CheckBox.cpp" />
+    <ClCompile Include="Engine.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="ItemBar.cpp" />
     <ClCompile Include="Label.cpp" />
@@ -497,6 +498,7 @@ copy /Y "$(SolutionDir)resources"  "$(TargetDir)resources\"</Command>
     <Library Include="extlibs\lib\x86\vorbisfile.lib" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine.h" />
     <ClInclude Include="EventProcessor.h" />
     <ClInclude Include="Button.h" />
     <ClInclude Include="CheckBox.h" />

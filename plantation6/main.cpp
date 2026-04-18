@@ -1,8 +1,7 @@
 #include <iostream>
 
-#include "EventProcessor.h"
 #include "MainMenu.h"
-#include "Scene.h"
+#include "Engine.h"
 
 void main()
 {
@@ -14,15 +13,29 @@ void main()
 	ogl_context.stencilBits = 8;
 	ogl_context.antialiasingLevel = 4;
 
-	sf::RenderWindow main_window(sf::VideoMode::getDesktopMode(), "", sf::Style::Fullscreen, ogl_context);
+	sf::RenderWindow main_window(sf::VideoMode::getDesktopMode(), "", sf::Style::Default, ogl_context);
 	sf::Vector2u resolution = main_window.getSize();
 
 	main_window.setActive(true);
 	Scene main_scene;
 	Camera main_camera(resolution);
 
+	Mesh floor(constructFloor(0.0f));
+	Mesh wall1(constructRandomWall());
+	Mesh wall2(constructRandomWall());
+	Mesh wall3(constructRandomWall());
+	Mesh wall4(constructRandomWall());
+	Mesh wall5(constructRandomWall());
+	Mesh wall6(constructRandomWall());
+	Mesh wall7(constructRandomWall());
+	Mesh wall8(constructRandomWall());
+	Mesh wall9(constructRandomWall());
+	Mesh wall10(constructRandomWall());
+
 	Mesh* mesh_list[] = {
-		nullptr
+		&floor,
+		&wall1, &wall2, &wall3, &wall4, &wall5,
+		&wall6, &wall7, &wall8, &wall9, &wall10
 	};
 	constexpr int n_meshes = sizeof(mesh_list) / sizeof(Mesh*);
 
@@ -41,6 +54,16 @@ void main()
 	
 	while (main_window.isOpen()) // цикл отрисовки кадра
 	{
+		static int i = 0;
+		main_camera.view.psi = i * 0.00033f;
+		main_camera.view.tetta = 0.1f;
+		main_camera.view.x = 50.0f * sin(main_camera.view.psi);
+		main_camera.view.y = 25.0f;
+		main_camera.view.z = 50.0f * cos(main_camera.view.psi);
+		++i;
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
 		// сцена рисуется новым OpenGL 3.3 Core
 		for (int i = 0; i < n_meshes; ++i)
 		{
@@ -50,8 +73,6 @@ void main()
 
 		// интерфейс рисуется старым OpenGL примитивами SFML
 		main_window.pushGLStates();
-
-		main_window.clear(sf::Color(255, 255, 255));
 
 		sf::Event main_window_event;
 		while (main_window.pollEvent(main_window_event)) // цикл обработки событий
