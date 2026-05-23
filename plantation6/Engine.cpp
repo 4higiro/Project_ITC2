@@ -250,12 +250,10 @@ bool isPointInFace(sf::Vector3f p0, sf::Vector3f p1, sf::Vector3f p2, sf::Vector
     return (u >= -eps) && (v >= -eps) && (u + v <= 1.0f + eps);
 }
 
-sf::Vector3f Location::getSupportForce(float m, sf::Vector3f S, sf::Vector3f V)
+sf::Vector3f Location::getSupportForce(float m, sf::Vector3f S, sf::Vector3f V, sf::Vector3f F)
 {
     sf::Vector3f Fsupport = { 0.0f, 0.0f, 0.0f };
-    const float threshold = 0.1f;
-    const float k = 1000.0f;
-    const float damping = 10.0f;
+    float dt = 0.0005f;
 
     for (int i = 0; i < 11; ++i)
     {
@@ -270,26 +268,28 @@ sf::Vector3f Location::getSupportForce(float m, sf::Vector3f S, sf::Vector3f V)
             sf::Vector3f s0 = { mesh->coords[j0 * 3], mesh->coords[j0 * 3 + 1], mesh->coords[j0 * 3 + 2] };
             sf::Vector3f s1 = { mesh->coords[j1 * 3], mesh->coords[j1 * 3 + 1], mesh->coords[j1 * 3 + 2] };
             sf::Vector3f s2 = { mesh->coords[j2 * 3], mesh->coords[j2 * 3 + 1], mesh->coords[j2 * 3 + 2] };
+            sf::Vector3f sn = { mesh->normals[j0 * 3], mesh->normals[j0 * 3 + 1], mesh->normals[j0 * 3 + 2] };
 
             sf::Vector3f Sp = projectionPointOnPlane(s0, s1, s2, S);
             if (!isPointInFace(s0, s1, s2, Sp)) continue;
 
             sf::Vector3f r = Sp - S;
             float len_r = sqrt(r.x * r.x + r.y * r.y + r.z * r.z);
-            if (len_r < 1E-6 || len_r > threshold) continue;
 
             sf::Vector3f n = { -r.x / len_r, -r.y / len_r, -r.z / len_r };
-            float Vn = V.x * n.x + V.y * n.y + V.z * n.z;
-            float F = k * (threshold - len_r) - damping * Vn;
-
-            if (F > 0)
-            {
-                Fsupport.x += F * n.x;
-                Fsupport.y += F * n.y;
-                Fsupport.z += F * n.z;
-            }
+            float dot_n = n.x * sn.x + n.y * sn.y + n.z * sn.z;
+            if (dot_n < 0.0f) n *= -1.0f;
+            if (len_r < 0.1f) Fsupport += n;
         }
     }
+
+    float len_Fs = sqrt(Fsupport.x * Fsupport.x + Fsupport.y * Fsupport.y + Fsupport.z * Fsupport.z);
+    Fsupport = sf::Vector3f(Fsupport.x / len_Fs, Fsupport.y / len_Fs, Fsupport.z / len_Fs);
+    float len_V = std::max(0.0f, -V.x * Fsupport.x + -V.y * Fsupport.y + -V.z * Fsupport.z);
+    float len_F = std::max(0.0f, -F.x * Fsupport.x + -F.y * Fsupport.y + -F.z * Fsupport.z);
+    Fsupport = Fsupport * len_F + Fsupport * len_V * (1.0f / dt) * m;
+
+    if (len_Fs < 1E-6) return sf::Vector3f(0.0f, 0.0f, 0.0f);
 
     return Fsupport;
 }
@@ -300,35 +300,39 @@ sf::Vector3f Location::getFrictionalForce(float m, sf::Vector3f S, sf::Vector3f 
     if (len_V < 1E-6) return sf::Vector3f(0.0f, 0.0f, 0.0f);
 
     float x = V.x / len_V;
-    float y = V.y / len_V;
-    return sf::Vector3f(-9.8f * x, 0.0f, -9.8f * y) * m;
+    float z = V.z / len_V;
+    return sf::Vector3f(-9.8f * x, 0.0f, -9.8f * z) * m;
 }
 
 Engine::Engine(float mass, sf::Vector3f S0, sf::Vector3f V0)
-    : m(mass), S(S0), V(V0), t0(std::chrono::high_resolution_clock::now()) {}
+    : m(mass), S(S0), V(V0){}
 
 void Engine::setExternalForce(sf::Vector3f F)
 {
     Fext = F;
 }
 
-sf::Vector3f Engine::calcPosition(Location& loc, bool reset_time)
+
+sf::Vector3f Engine::calcPosition(Location& loc)
 {
-    if (reset_time) t0 = std::chrono::high_resolution_clock::now();
-    std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    float dt = 0.0005f;
 
-    auto t1 = std::chrono::high_resolution_clock::now();
-    float dt = std::chrono::duration_cast<std::chrono::microseconds>(t1 - t0).count() * 1E-6;
+    for (int i = 0; i < 20; ++i)
+    {
+        sf::Vector3f mg = sf::Vector3f(0.0, -9.8f, 0.0f) * m;
+        sf::Vector3f Ffrict = loc.getFrictionalForce(m, S, V);
+        sf::Vector3f F = Fext + mg + Ffrict;
+        sf::Vector3f Fsup = loc.getSupportForce(m, S, V, F);
 
-    sf::Vector3f F = sf::Vector3f(0.0, -9.8f, 0.0f) * m + Fext + loc.getFrictionalForce(m, S, V) + loc.getSupportForce(m, S, V);
+        sf::Vector3f R = F + Fsup;
 
-    sf::Vector3f Vt = F * (1.0f / m);
-    sf::Vector3f St = V;
+        sf::Vector3f Vt = R * (1.0f / m);
+        sf::Vector3f St = V;
 
-    S += St * dt;
-    V += Vt * dt;
-    t0 = t1;
-
+        S += St * dt;
+        V += Vt * dt;
+    }
+    
     return S;
 }
 

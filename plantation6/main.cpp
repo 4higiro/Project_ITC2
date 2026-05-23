@@ -1,7 +1,9 @@
 #include <iostream>
 
 #include "MainMenu.h"
-#include "Engine.h"
+#include "Entity.h"
+#include "CheckBox.h"
+#include "ItemBar.h"
 
 void main()
 {
@@ -31,11 +33,28 @@ void main()
 	Mesh wall8(constructRandomWall());
 	Mesh wall9(constructRandomWall());
 	Mesh wall10(constructRandomWall());
+	
+	Location main_location;
+	main_location.floor = &floor.data;
+	main_location.walls[0] = &wall1.data;
+	main_location.walls[1] = &wall2.data;
+	main_location.walls[2] = &wall3.data;
+	main_location.walls[3] = &wall4.data;
+	main_location.walls[4] = &wall5.data;
+	main_location.walls[5] = &wall6.data;
+	main_location.walls[6] = &wall7.data;
+	main_location.walls[7] = &wall8.data;
+	main_location.walls[8] = &wall9.data;
+	main_location.walls[9] = &wall10.data;
+
+	Mesh person(constructRandomWall());
+	Entity person_entity(10.0f, { 0.0f, 0.1f, 0.0f }, &person);
 
 	Mesh* mesh_list[] = {
 		&floor,
 		&wall1, &wall2, &wall3, &wall4, &wall5,
-		&wall6, &wall7, &wall8, &wall9, &wall10
+		&wall6, &wall7, &wall8, &wall9, &wall10,
+		&person
 	};
 	constexpr int n_meshes = sizeof(mesh_list) / sizeof(Mesh*);
 
@@ -48,19 +67,21 @@ void main()
 	main_menu.setAchievementsButton(&achievements_button);
 
 	EventProcessor* event_objects[] = {
-		&main_menu, &play_button, &settings_button, &achievements_button
+		&person_entity
 	};
 	constexpr int n_draw_objects = sizeof(event_objects) / sizeof(EventProcessor*);
 	
 	while (main_window.isOpen()) // цикл отрисовки кадра
 	{
 		static int i = 0;
-		main_camera.view.psi = i * 0.00033f;
+		main_camera.view.psi = i * 0.0001f;
 		main_camera.view.tetta = 0.1f;
-		main_camera.view.x = 50.0f * sin(main_camera.view.psi);
-		main_camera.view.y = 25.0f;
-		main_camera.view.z = 50.0f * cos(main_camera.view.psi);
+		main_camera.view.x = -50.0f * sin(main_camera.view.psi);
+		main_camera.view.y = -25.0f;
+		main_camera.view.z = -50.0f * cos(main_camera.view.psi);
 		++i;
+
+		person_entity.emulate(main_location);
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

@@ -44,9 +44,9 @@ float* Transformation::getScale()
 
 float* Transformation::getTrans()
 {
-	trans[0] = 1.0;		trans[1] = 0.0;		trans[2] = 0.0;		trans[3] = -x;
-	trans[4] = 0.0;		trans[5] = 1.0;		trans[6] = 0.0;		trans[7] = -y;
-	trans[8] = 0.0;		trans[9] = 0.0;		trans[10] = 1.0;	trans[11] = -z;
+	trans[0] = 1.0;		trans[1] = 0.0;		trans[2] = 0.0;		trans[3] = x;
+	trans[4] = 0.0;		trans[5] = 1.0;		trans[6] = 0.0;		trans[7] = y;
+	trans[8] = 0.0;		trans[9] = 0.0;		trans[10] = 1.0;	trans[11] = z;
 	trans[12] = 0.0;	trans[13] = 0.0;	trans[14] = 0.0;	trans[15] = 1.0;
 
 	return trans.data();

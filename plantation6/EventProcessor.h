@@ -55,8 +55,8 @@ public:
         if (!prev_is_mouse_hover && is_mouse_hover) mouseHitEvent();
     }
 
-    virtual void render(sf::RenderWindow* window) = 0;
-    virtual sf::Rect<unsigned> mouseArea() = 0;
+    virtual void render(sf::RenderWindow* window) {};
+    virtual sf::Rect<unsigned> mouseArea() { return sf::Rect<unsigned>(); };
 
     void show()
     {
